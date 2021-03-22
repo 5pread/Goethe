@@ -9,22 +9,22 @@ import datetime
 path = os.path.abspath(os.getcwd())
 filepath = (f'{path}\data\class.json')
 
-sys.path.append("C:/Users/sbsag/PycharmProjects/AutomatedZoom")
+sys.path.append("C:/yourpath/AutomatedZoom")
 screenWidth, screenHeight = pyautogui.size()
 
 LoginScreen()
-question = str(input("""      Başlatmak için başlat ya da 'b' yazınız
+question = str(input("""      Başlatmak için başlat ya da 'b' yazınız       
 Önerilen ayarları görmek için ayarlar veya 'a' yazınız\n
-                    """))
+                    """))   # write 'b' or 'başlat', 'a' or 'ayarlar' to see recommended settings
 
-if question.lower() == 'başlat' or question.lower() == 'b' and CheckZoomIsOpen() == True:
+if question.lower() == 'başlat' or question.lower() == 'b' and CheckZoomIsOpen() == True:     
     print("""                ...BAŞLATILIYOR...               """)
     time.sleep(2)
-    starting_time = input('███████ DERS BAŞLANGIC SAATİ: (XX:YY) ŞEKLİNDE ███████\n')
-    cL = int(input('███████ DERSLER KAÇ DAKİKA SÜRÜYOR: ███████\n'))
-    class_break = int(input('███████ TENEFÜS KAÇ DAKİKA: ███████\n'))
+    starting_time = input('███████ DERS BAŞLANGIC SAATİ: (XX:YY) ŞEKLİNDE ███████\n')     #meeting starting-time
+    cL = int(input('███████ DERSLER KAÇ DAKİKA SÜRÜYOR: ███████\n'))                    #how does meeting last long, -minutes-  
+    class_break = int(input('███████ TENEFÜS KAÇ DAKİKA: ███████\n'))                   #how does the break last long -minutes-
 
-    ImportToJson()
+    ImportToJson()        #get meeting information
 
     IDList = []
     PWDList = []
@@ -51,7 +51,7 @@ if question.lower() == 'başlat' or question.lower() == 'b' and CheckZoomIsOpen(
     b = True
     while a:
         try:
-            if Time() == starting_time:
+            if Time() == starting_time:     
                 print('DERSE KATILIYOR')
                 ExecuteZoom()
                 time.sleep(6)
