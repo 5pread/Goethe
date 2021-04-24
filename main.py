@@ -3,13 +3,13 @@ import sys
 import time
 import string
 import random
-from functions import *
 import datetime
+from functions import *
 
 path = os.path.abspath(os.getcwd())
 filepath = (f'{path}\data\class.json')
 
-sys.path.append("C:/yourpath/AutomatedZoom")
+#sys.path.append("C:/yourpath/AutomatedZoom")
 screenWidth, screenHeight = pyautogui.size()
 
 LoginScreen()
@@ -17,18 +17,19 @@ question = str(input("""      Başlatmak için başlat ya da 'b' yazınız
 Önerilen ayarları görmek için ayarlar veya 'a' yazınız\n
                     """))   # write 'b' or 'başlat', 'a' or 'ayarlar' to see recommended settings
 
-if question.lower() == 'başlat' or question.lower() == 'b' and CheckZoomIsOpen() == True:     
+if question.lower() == 'başlat' or question.lower() == 'b' and DoesZoomRunning() == True:
     print("""                ...BAŞLATILIYOR...               """)
     time.sleep(2)
     starting_time = input('███████ DERS BAŞLANGIC SAATİ: (XX:YY) ŞEKLİNDE ███████\n')     #meeting starting-time
     cL = int(input('███████ DERSLER KAÇ DAKİKA SÜRÜYOR: ███████\n'))                    #how does meeting last long, -minutes-  
-    class_break = int(input('███████ TENEFÜS KAÇ DAKİKA: ███████\n'))                   #how does the break last long -minutes-
+    class_break = int(input('███████ TENEFÜS KAÇ DAKİKA: ███████\n'))                   #how does the break last long, -minutes-
 
     ImportToJson()        #get meeting information
 
     IDList = []
     PWDList = []
     NameList = []
+    cM = cL * 60
 
     with open(filepath, "r") as json_dosya:
         veriler = json.load(json_dosya)
@@ -37,21 +38,11 @@ if question.lower() == 'başlat' or question.lower() == 'b' and CheckZoomIsOpen(
             PWDList.append(data["Password"])
             NameList.append(data["DERS"])
 
-    t = datetime.datetime.now()
-    current_time = str(t.hour) + ":" + str(t.minute)
-
-    t2 = datetime.datetime.now() + datetime.timedelta(minutes=cL)
-    end_time = str(t2.hour) + ":" + str(t2.minute)
-
-    print(end_time)
-
-    cM = cL * 60
-
     a = True
-    b = True
+    #b = True
     while a:
         try:
-            if Time() == starting_time:     
+            if Time() == starting_time:     #if current time hits starting time, join meeting
                 print('DERSE KATILIYOR')
                 ExecuteZoom()
                 time.sleep(6)
@@ -60,7 +51,7 @@ if question.lower() == 'başlat' or question.lower() == 'b' and CheckZoomIsOpen(
                     meeting_password=PWDList[0],
                     meeting_name=NameList[0]
                 )
-                # join-meeting
+                #join-meeting
                 for j in range(0, cM):
                     time.sleep(1)
 
@@ -78,6 +69,7 @@ if question.lower() == 'başlat' or question.lower() == 'b' and CheckZoomIsOpen(
             elif Time() != starting_time:
                 time.sleep(1)
                 print("""███ DERS İÇİN BEKLENİYOR ███""", end="")
+
         except:
             pass
 
@@ -130,12 +122,12 @@ if question.lower() == 'başlat' or question.lower() == 'b' and CheckZoomIsOpen(
 
 elif question.lower() == 'ayarlar' or question.lower() == 'a':
     print("""               ÖNERİLEN AYARLAR          
-1) Zoom'a kayıt olup, kullanıcı girişinin yapılmış olması
-2) Zoom ayarlarından meeting'e katıldığında otomatik olarak mikrofonun kapatılması ayarının yapılması                                                             
+1) Zoom'a kullanıcı girişi yapılmalıdır
+2) Zoom>Settings>Audio>Mute my mic... ve Zoom>Settings>Video>Turn off my video... işaretlerinin seçili olması                                                  
 3) Ekranda zoom penceresinin sürekli açık, diğer pencerelerin üstünde ve pencere boyutunun en az ekranın 1/3ü kadar olması
-4) Program 2 farklı ders üzerinden her ders 2 ders saati olmak üzere hazırlanmıştır, yani 4 ders saati vardır.
-5) Bot çalışır iken bilgisayarda başka işlem yapılmaması tavsiye edilir. 
+4) Program tek çeşit dersten 2 ders saati olarak hazırlanmıştır
+5) Bilgisayarda başka işlem yapılmaması tavsiye edilir
         """)
 
 else:
-    print("Önce Zoom'u çalıştırın.")
+    print("             Önce Zoom'u çalıştırın.         ")
